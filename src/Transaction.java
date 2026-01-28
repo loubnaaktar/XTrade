@@ -1,3 +1,4 @@
+import java.util.ArrayList;
 import java.util.Date;
 
 public class Transaction {
@@ -5,6 +6,7 @@ public class Transaction {
     private int quantite;
     private double prix;
     private Date LocalDateTime;
+    private ArrayList<Asset> assets = new ArrayList<>();
 
     public Transaction(String type, int quantite, double prix, Date localDateTime) {
         this.type = type;

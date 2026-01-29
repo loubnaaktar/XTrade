@@ -11,14 +11,6 @@ static Market market = new Market();
 
 
 public static void ajouterTrader(){
-//    Trader tr = new Trader();
-//    System.out.println("entrez votre nom : ");
-//    tr.setNom(sc.nextLine());
-//    sc.nextLine();
-//    System.out.println("entrez votre solde initial: ");
-//    tr.setSolde(sc.nextInt());
-//    System.out.println(tr);
-//    market.AjouterTrader(tr);
 
     sc.nextLine();
     System.out.print("entrez votre nom :");
@@ -27,7 +19,6 @@ public static void ajouterTrader(){
     double solde = sc.nextFloat();
     Trader tr = new Trader(nom,solde);
     market.AjouterTrader(tr);
-
 
 }
 
@@ -74,7 +65,7 @@ public static void changerPrix(){
     String code = sc.nextLine();
     Asset a = market.chercherAsset(code);
     if(a != null){
-        System.out.println("entrez le nouveau prix unitaire: ");
+        System.out.print("entrez le nouveau prix unitaire: ");
         double nvprix = sc.nextDouble();
         market.changerPrix(a, nvprix);
     }else{
@@ -82,6 +73,10 @@ public static void changerPrix(){
     }
 }
 
+public static void consulterPf(){
+    System.out.print("entrez Id du portefeuille: ");
+    market.ConsulterPortefeuille(sc.nextInt());
+}
 
     public static void main(String[] args) {
     int ch;
@@ -114,24 +109,22 @@ do{
             do{
             System.out.println("1- ajouter trader\n" +
                     "2- afficher les actifs\n" +
-                    "3- Créer un portefeuille\n" +
-                    "4- Consulter un portefeuille\n" +
-                    "5- Acheter un actif\n" +
-                    "6- Vendre un actif\n" +
-                    "7- Historique\n" +
-                    "8- Retour");
+                    "3- Consulter un portefeuille\n" +
+                    "4- Acheter un actif\n" +
+                    "5- Vendre un actif\n" +
+                    "6- Historique\n" +
+                    "7- Retour");
             System.out.print("entrez votre choix: ");
             c = sc.nextInt();
             switch(c){
                 case 1 -> ajouterTrader();
                 case 2 -> afficherActifs();
-                case 3 -> System.out.println("créer un portefeuille");
-                case 4 -> System.out.println("Acheter un actif");
-                case 5 -> System.out.println("cheter un actif");
-                case 6 -> System.out.println("Vendre un actif");
-                case 7 -> System.out.println("Historique");
-                case 8 -> System.out.println("Retour");
-                default -> System.out.println("entrez un nombre entre 1 et 8");
+                case 3 -> consulterPf();
+                case 4 -> System.out.println("cheter un actif");
+                case 5 -> System.out.println("Vendre un actif");
+                case 6 -> System.out.println("Historique");
+                case 7 -> System.out.println("Retour");
+                default -> System.out.println("entrez un nombre entre 1 et 7");
             }
             }while(c != 8 );
         }else if(ch == 3){

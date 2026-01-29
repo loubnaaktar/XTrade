@@ -1,4 +1,5 @@
 import java.util.ArrayList;
+import java.util.Objects;
 
 public class Market {
     private String nomMarket;
@@ -16,26 +17,36 @@ public class Market {
         System.out.println("les information de l'actif ajouté \n" +
                 "- le type : " + a.getType() + "\n" +
                 "- le code: " + a.getCode() + "\n" +
-                "- le prix unitaire :" + a.getPrixUnitaire() + "\n" +
+                "- le prix unitaire :" + a.getPrixUnitaire() + " $ \n" +
                 "- la quantité: " + a.getQuantiteAsset());
     }
 
     public void AjouterTrader(Trader trader) {
         if (trader.getSolde() > 0) {
-            System.out.println("trader ajouté avec succés ");
             traders.add(trader);
-            System.out.println("----------------------------------------");
-            System.out.println("les informations du trader : ");
-            System.out.println("l'ID du trader: " + trader.getId() + "\n" +
-                    "le nom : " + trader.getNom() + "\n" +
-                    "les solde initial : " + trader.getSolde() + " $ \n"
-            );
+            creerPortefeuille(trader);
         } else {
             System.out.println("le solde doit étre superieur à 0 ");
         }
 
     }
 
+    public void creerPortefeuille(Trader trader) {
+
+        Portfolio<Asset> pf = new Portfolio<>();
+        trader.setPortfolio(pf);
+        System.out.println("----------------------------------------");
+        System.out.println("----------------------------------------");
+        System.out.println("Trader ajouté avec succés ");
+        System.out.println("----------------------------------------");
+        System.out.println("- Les informations du trader : ");
+        System.out.println("- L'id du trader: " + trader.getId() + "\n" +
+                "- Le nom : " + trader.getNom() + "\n" +
+                "- L'id du portfeuille : " +pf.idPorfolio + "\n" +
+                "- Les solde initial : " + trader.getSolde() + " $ \n");
+        System.out.println("----------------------------------------");
+        System.out.println("----------------------------------------");
+    }
     public void AfficherActifs(int num) {
         if(!assets.isEmpty()){
         if (num == 1) {
@@ -62,7 +73,7 @@ public class Market {
 
     public Asset chercherAsset(String code) {
         for (Asset asset : assets) {
-            if (asset.getCode() == code) {
+            if (Objects.equals(asset.getCode(), code)) {
                 return asset;
             }
         }
@@ -80,10 +91,35 @@ public class Market {
         }
     }
 
-    public void CreerPortefeuille() {
+    public Trader chercherTrader(int id){
+       if(!traders.isEmpty()){
+           for(Trader tr : traders){
+               if(tr.getPortfolio().idPorfolio == id){
+                   return tr;
+               }else{
+                       System.out.println("ce id n'existe pas!  ");
+                   }
+           }
+       }else{
+           System.out.println("aucun portefeuille");
+       }
+        return null;
     }
-
-    public void ConsulterPortefeuille() {
+    public void ConsulterPortefeuille(int id) {
+        Trader tr = chercherTrader(id);
+        if(tr != null){
+            if(tr.getPortfolio().idPorfolio == id) {
+                System.out.println("----------------------------------------");
+                System.out.println("----------------------------------------");
+                System.out.println("---- Les informations du Portefeuille----- ");
+                System.out.println("ID de Portefeuille: " + tr.getPortfolio().idPorfolio + "\n" +
+                        "Le nom de trader: " + tr.getNom() + "\n" +
+                        "Le solde : " + tr.getSolde() + "\n" +
+                        "Les actifs : ");
+                System.out.println("----------------------------------------");
+                System.out.println("----------------------------------------");
+            }
+        }
     }
 
     public void AcheterActif() {

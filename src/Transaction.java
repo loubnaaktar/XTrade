@@ -14,6 +14,7 @@ public class Transaction {
         this.prix = prix;
         LocalDateTime = localDateTime;
     }
+    public Transaction (){}
 
     public String getType() {
         return type;
@@ -45,5 +46,13 @@ public class Transaction {
 
     public void setLocalDateTime(Date localDateTime) {
         LocalDateTime = localDateTime;
+    }
+
+    public ArrayList<Asset> getAssets() {
+        return assets;
+    }
+
+    public void setAssets(Asset a) {
+       assets.add(a);
     }
 }

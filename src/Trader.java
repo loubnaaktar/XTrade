@@ -33,4 +33,12 @@ public class Trader extends Person{
     public void setPortfolio(Portfolio<Asset> portfolio) {
         this.portfolio = portfolio;
     }
+
+    public ArrayList<Transaction> getTransactions() {
+        return transactions;
+    }
+
+    public void setTransactions(Transaction transaction) {
+        transactions.add(transaction);
+    }
 }

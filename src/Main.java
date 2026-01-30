@@ -74,8 +74,23 @@ public static void changerPrix(){
 }
 
 public static void consulterPf(){
-    System.out.print("entrez Id du portefeuille: ");
+    System.out.print("entrez Id du trader: ");
     market.ConsulterPortefeuille(sc.nextInt());
+}
+
+public static void acheterAsset(){
+    System.out.print("entrez votre id : ");
+    Trader tr = market.chercherTrader(sc.nextInt());
+    if(tr != null){
+        sc.nextLine();
+        System.out.print("entrez le code de l'asset à acheter: ");
+        Asset a = market.chercherAsset(sc.nextLine());
+        if(a != null){
+            System.out.print("entrez la quantité que vous voulez acheter: ");
+            int quantite = sc.nextInt();
+            market.AcheterActif(tr, a, quantite);
+        }
+    }
 }
 
     public static void main(String[] args) {
@@ -120,7 +135,7 @@ do{
                 case 1 -> ajouterTrader();
                 case 2 -> afficherActifs();
                 case 3 -> consulterPf();
-                case 4 -> System.out.println("cheter un actif");
+                case 4 -> acheterAsset();
                 case 5 -> System.out.println("Vendre un actif");
                 case 6 -> System.out.println("Historique");
                 case 7 -> System.out.println("Retour");

@@ -1,3 +1,4 @@
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Date;
 
@@ -5,15 +6,18 @@ public class Transaction {
     private String type;
     private int quantite;
     private double prix;
-    private Date LocalDateTime;
-    private ArrayList<Asset> assets = new ArrayList<>();
+    private LocalDateTime date;
+//    private ArrayList<Asset> assets = new ArrayList<>();
+    private Asset asset ;
 
-    public Transaction(String type, int quantite, double prix, Date localDateTime) {
+
+    public Transaction(String type, int quantite, double prix, LocalDateTime date) {
         this.type = type;
         this.quantite = quantite;
         this.prix = prix;
-        LocalDateTime = localDateTime;
+        this.date = date;
     }
+
     public Transaction (){}
 
     public String getType() {
@@ -28,10 +32,6 @@ public class Transaction {
         return prix;
     }
 
-    public Date getLocalDateTime() {
-        return LocalDateTime;
-    }
-
     public void setType(String type) {
         this.type = type;
     }
@@ -44,15 +44,28 @@ public class Transaction {
         this.prix = prix;
     }
 
-    public void setLocalDateTime(Date localDateTime) {
-        LocalDateTime = localDateTime;
+    public LocalDateTime getDate() {
+        return date;
     }
 
-    public ArrayList<Asset> getAssets() {
-        return assets;
+    public void setDate(LocalDateTime date) {
+        this.date = date;
+    }
+//
+//    public ArrayList<Asset> getAssets() {
+//        return assets;
+//    }
+//
+//    public void setAssets(Asset a) {
+//       assets.add(a);
+//    }
+
+
+    public Asset getAsset() {
+        return asset;
     }
 
-    public void setAssets(Asset a) {
-       assets.add(a);
+    public void setAsset(Asset asset) {
+        this.asset = asset;
     }
 }

@@ -1,6 +1,6 @@
 public class Stock extends Asset{
-    public Stock(String code, String nomAsset, double prixUnitaire, int quantiteAsset) {
-        super(code, nomAsset, prixUnitaire, quantiteAsset);
+    public Stock(String code, String nomAsset, double prixUnitaire) {
+        super(code, nomAsset, prixUnitaire);
     }
 
     @Override

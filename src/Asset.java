@@ -4,11 +4,12 @@ public abstract class Asset {
     private double prixUnitaire;
     private int quantiteAsset;
 
-    public Asset(String code, String nomAsset, double prixUnitaire, int quantiteAsset) {
+
+    public Asset(String code, String nomAsset, double prixUnitaire) {
         this.code = code;
         this.nomAsset = nomAsset;
         this.prixUnitaire = prixUnitaire;
-        this.quantiteAsset = quantiteAsset;
+
     }
 
     public String getCode() {
@@ -35,15 +36,18 @@ public abstract class Asset {
         this.prixUnitaire = prixUnitaire;
     }
 
+    public String getType(){
+        return "Asset";
+    }
+
     public int getQuantiteAsset() {
         return quantiteAsset;
     }
 
-    public void setQuantiteAsset(int quantiteAsset) {
-        this.quantiteAsset = quantiteAsset;
+    public void addQuantite(int q) {
+        this.quantiteAsset += q;
     }
-
-    public String getType(){
-        return "Asset";
+    public void retirerQuantite(int q) {
+        this.quantiteAsset -= q;
     }
 }

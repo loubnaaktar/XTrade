@@ -6,6 +6,7 @@ public class Trader extends Person{
     private Portfolio<Asset> portfolio;
     private ArrayList<Transaction> transactions = new ArrayList<>();
 
+
     public Trader(String nom, double solde) {
         super(nom);
         this.solde = solde;

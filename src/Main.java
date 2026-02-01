@@ -36,28 +36,17 @@ public static void ajouterActif(){
     String nom = sc.nextLine();
     System.out.print("entrez le prix unitaire : ");
     double prix = sc.nextDouble();
-    System.out.print("entrez la quantité ajoutée: ");
-    int quantite = sc.nextInt();
-
     if(ch == 1){
-     Stock stock = new Stock(code,nom,prix,quantite);
-     market.AjouterActif(stock);
+     Stock stock = new Stock(code,nom,prix);
+     market.AjouterActif(code,stock);
     }else if(ch == 2){
-    CryptoCurrency cr = new CryptoCurrency(code,nom,prix,quantite);
-    market.AjouterActif(cr);
+    CryptoCurrency cr = new CryptoCurrency(code,nom,prix);
+    market.AjouterActif(code, cr);
     }else{
         System.out.println("entrez 1 ou 2 ");
     }
 }
 
-public static void afficherActifs(){
-    System.out.println("choisisez le type que vous voulez consulter :\n" +
-            "1- Stock\n" +
-            "2- Crypto");
-    System.out.print("entrez votre choix: ");
-    int num = sc.nextInt();
-    market.AfficherActifs(num);
-}
 
 public static void changerPrix(){
     sc.nextLine();
@@ -83,6 +72,7 @@ public static void acheterAsset(){
     Trader tr = market.chercherTrader(sc.nextInt());
     if(tr != null){
         sc.nextLine();
+        market.AfficherActifs();
         System.out.print("entrez le code de l'asset à acheter: ");
         Asset a = market.chercherAsset(sc.nextLine());
         if(a != null){
@@ -91,9 +81,35 @@ public static void acheterAsset(){
             market.AcheterActif(tr, a, quantite);
         }
     }
+
 }
 
+public static void vendreAsset(){
+    System.out.print("entrez votre id : ");
+    Trader tr = market.chercherTrader(sc.nextInt());
+    if(tr != null){
+        sc.nextLine();
+        System.out.print("entrez le code de l'asset à vendre: ");
+        Asset a = market.chercherAsset(sc.nextLine());
+        if(a != null){
+            if (tr.getPortfolio().getAssets().contains(a)){
+                System.out.print("entrez la quantité que vous voulez vendre: ");
+                int quantite = sc.nextInt();
+                market.vendreActif(tr, a, quantite);
+            }else{
+                System.out.println("cet asset n'existe pas chez vous !");
+            }
+
+        }
+    }
+
+    }
+
     public static void main(String[] args) {
+
+
+
+
     int ch;
 do{
 
@@ -133,15 +149,15 @@ do{
             c = sc.nextInt();
             switch(c){
                 case 1 -> ajouterTrader();
-                case 2 -> afficherActifs();
+                case 2 -> market.AfficherActifs();
                 case 3 -> consulterPf();
                 case 4 -> acheterAsset();
-                case 5 -> System.out.println("Vendre un actif");
-                case 6 -> System.out.println("Historique");
+                case 5 -> vendreAsset();
+                case 6 -> market.Historique();
                 case 7 -> System.out.println("Retour");
                 default -> System.out.println("entrez un nombre entre 1 et 7");
             }
-            }while(c != 8 );
+            }while(c != 7 );
         }else if(ch == 3){
             System.out.println("Merci");
         }else{

@@ -7,7 +7,6 @@ public class Transaction {
     private int quantite;
     private double prix;
     private LocalDateTime date;
-//    private ArrayList<Asset> assets = new ArrayList<>();
     private Asset asset ;
 
 
@@ -51,14 +50,6 @@ public class Transaction {
     public void setDate(LocalDateTime date) {
         this.date = date;
     }
-//
-//    public ArrayList<Asset> getAssets() {
-//        return assets;
-//    }
-//
-//    public void setAssets(Asset a) {
-//       assets.add(a);
-//    }
 
 
     public Asset getAsset() {

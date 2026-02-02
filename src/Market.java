@@ -144,12 +144,13 @@ public class Market {
            for(Trader tr : traders){
                if(tr.getId() == id){
                    return tr;
-               }else{
-                   System.out.println("----------------------------------------");
-                       System.out.println("cet id n'existe pas!  ");
-                   System.out.println("----------------------------------------");
-                   }
+               }
+
            }
+           System.out.println("----------------------------------------");
+           System.out.println("cet id n'existe pas!  ");
+           System.out.println("----------------------------------------");
+
        }else{
            System.out.println("----------------------------------------");
            System.out.println("aucun trader");
@@ -205,7 +206,7 @@ public class Market {
                         transaction.setPrix(prixTotal);
                         transaction.setDate(LocalDateTime.now());
                         tr.setTransactions(transaction);
-//                        transaction.setAssets(a);
+
                         transactions.add(transaction);
                         tr.getPortfolio().ajouterquantite(a, quantite);
                         System.out.println("----------------------------------------");
@@ -248,7 +249,7 @@ public class Market {
                 transaction.setPrix(prixTotal);
                 transaction.setDate(LocalDateTime.now());
                 tr.setTransactions(transaction);
-//                transaction.setAssets(a);
+
                 transactions.add(transaction);
                 tr.getPortfolio().diminuerQuantite(a, quantite);
                 System.out.println("--------------------------------------");

@@ -105,6 +105,25 @@ public static void vendreAsset(){
 
     }
 
+    public static void  historiqueTransaction(){
+        System.out.println("Voulez-vous voir l’historique général ou l’historique d’un trader ? : 1- historique général || 2- l'historique d'un trader ");
+        System.out.print("entrez votre choix: ");
+        int choix = sc.nextInt();
+        if(choix == 1){
+            market.Historique();
+        }else if (choix == 2){
+            System.out.print("entrez l'id du trader:");
+            Trader tr = market.chercherTrader(sc.nextInt());
+            if(tr != null){
+                market.transisionTrader(tr);
+            }
+        }else{
+            System.out.println("entrez 1 ou 2 ");
+        }
+
+
+    }
+
     public static void main(String[] args) {
 
 
@@ -153,7 +172,7 @@ do{
                 case 3 -> consulterPf();
                 case 4 -> acheterAsset();
                 case 5 -> vendreAsset();
-                case 6 -> market.Historique();
+                case 6 -> historiqueTransaction();
                 case 7 -> System.out.println("Retour");
                 default -> System.out.println("entrez un nombre entre 1 et 7");
             }

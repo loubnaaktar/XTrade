@@ -1,6 +1,7 @@
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Objects;
+import java.util.stream.Stream;
 
 
 public class Market {
@@ -289,6 +290,20 @@ public class Market {
                 }
             }
 
+    }
+
+
+    public void transisionTrader(Trader tr){
+       traders.stream().filter(trader -> trader.getTransactions().equals(tr.getTransactions()))
+               .forEach(trader->{
+                   System.out.println("les transactions du trader " + trader.getNom() + " : ");
+                   transactions.stream().filter(transaction -> tr.getTransactions() == trader.getTransactions())
+                   .forEach(transaction -> {
+                       if (transaction.getAsset() != null){
+                           System.out.println("- le type de la transaction : " + transaction.getType() + " || le nom de l'asset: " +transaction.getAsset().getNomAsset() + " || - la quantité: " + transaction.getQuantite()  + "|| - la date :" + transaction.getDate());
+                       }
+                   });
+               });
     }
 
 

@@ -206,7 +206,7 @@ public class Market {
                         transaction.setPrix(prixTotal);
                         transaction.setDate(LocalDateTime.now());
                         tr.setTransactions(transaction);
-
+                        transaction.setAsset(a);
                         transactions.add(transaction);
                         tr.getPortfolio().ajouterquantite(a, quantite);
                         System.out.println("----------------------------------------");
@@ -249,7 +249,7 @@ public class Market {
                 transaction.setPrix(prixTotal);
                 transaction.setDate(LocalDateTime.now());
                 tr.setTransactions(transaction);
-
+                transaction.setAsset(a);
                 transactions.add(transaction);
                 tr.getPortfolio().diminuerQuantite(a, quantite);
                 System.out.println("--------------------------------------");
@@ -277,12 +277,13 @@ public class Market {
     }
 
     public void Historique() {
-        System.out.println("----------Historique---------");
+
         if (transactions.isEmpty()) {
             System.out.println("----------------------------------------");
             System.out.println("aucune transaction pour le moment ");
             System.out.println("----------------------------------------");
         }
+        System.out.println("----------Historique---------");
             for (Transaction transaction : transactions) {
                 if (transaction.getAsset() != null) {
                     System.out.println("- le type de la transaction : " + transaction.getType() + " || le nom de l'asset: " +transaction.getAsset().getNomAsset() + " || - la quantité: " + transaction.getQuantite()  + "|| - la date :" + transaction.getDate());

@@ -10,6 +10,7 @@ public class Transaction {
     private Asset asset ;
 
 
+
     public Transaction(String type, int quantite, double prix, LocalDateTime date) {
         this.type = type;
         this.quantite = quantite;

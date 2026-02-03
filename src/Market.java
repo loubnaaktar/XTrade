@@ -1,6 +1,9 @@
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.List;
 import java.util.Objects;
+import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 
@@ -12,9 +15,10 @@ public class Market {
 
 
     public Market() {
-       assets = new ArrayList<>();
-       initialiserAssets();
+        assets = new ArrayList<>();
+        initialiserAssets();
     }
+
     private void initialiserAssets() {
 
         Stock stock1 = new Stock("AAPL", "Apple", 150.0);
@@ -36,8 +40,7 @@ public class Market {
     }
 
 
-
-    public void AjouterActif(String code,Asset a) {
+    public void AjouterActif(String code, Asset a) {
         if (a.getCode().equals(code)) {
             System.out.println("----------------------------------------");
             System.out.println("cet asset existe déja");
@@ -87,25 +90,26 @@ public class Market {
         System.out.println("- Les informations du trader : ");
         System.out.println("- L'id du trader: " + trader.getId() + "\n" +
                 "- Le nom : " + trader.getNom() + "\n" +
-                "- L'id du portfeuille : " +pf.getIdPorfolio() + "\n" +
+                "- L'id du portfeuille : " + pf.getIdPorfolio() + "\n" +
                 "- Les solde initial : " + trader.getSolde() + " $ \n");
         System.out.println("----------------------------------------");
         System.out.println("----------------------------------------");
     }
+
     public void AfficherActifs() {
-        if(!assets.isEmpty()){
+        if (!assets.isEmpty()) {
 
             System.out.println("----------------------------------------");
             System.out.println("----------------------------------------");
             System.out.println("les actifs existés sont:");
             for (Asset a : assets) {
-                    System.out.println(" \n" +
-                            "- " + a.getNomAsset() + " || le code : " +a.getCode() + "|| le prix unitaire: " + a.getPrixUnitaire() + "$ ");
+                System.out.println(" \n" +
+                        "- " + a.getNomAsset() + " || le code : " + a.getCode() + "|| le prix unitaire: " + a.getPrixUnitaire() + "$ ");
 
-                }
+            }
             System.out.println("----------------------------------------");
             System.out.println("----------------------------------------");
-        }else{
+        } else {
             System.out.println("----------------------------------------");
             System.out.println("aucun actif pour le moment");
             System.out.println("----------------------------------------");
@@ -113,74 +117,75 @@ public class Market {
     }
 
     public Asset chercherAsset(String code) {
-    for (Asset asset : assets) {
+        for (Asset asset : assets) {
             if (asset.getCode().equals(code)) {
                 return asset;
             }
         }
         System.out.println("----------------------------------------");
-            System.out.println("ce code n'existe pas! ");
+        System.out.println("ce code n'existe pas! ");
         System.out.println("----------------------------------------");
 
-    return null;
+        return null;
     }
 
-    public void changerPrix(Asset a, double nvprix){
-        if(nvprix > 0 ){
+    public void changerPrix(Asset a, double nvprix) {
+        if (nvprix > 0) {
             double anprix = a.getPrixUnitaire();
             a.setPrixUnitaire(nvprix);
             System.out.println("----------------------------------------");
             System.out.println("prix changé avec succés");
-            System.out.println("-" + a.getNomAsset() + " || le code N°: " + a.getCode()+ " || l'ancien prix :" + anprix + " $" + " || le nouveau prix: " + a.getPrixUnitaire() + " $ ");
+            System.out.println("-" + a.getNomAsset() + " || le code N°: " + a.getCode() + " || l'ancien prix :" + anprix + " $" + " || le nouveau prix: " + a.getPrixUnitaire() + " $ ");
             System.out.println("----------------------------------------");
-        }else{
+        } else {
             System.out.println("----------------------------------------");
             System.out.println("le prix doit étre supérieur ");
             System.out.println("----------------------------------------");
         }
     }
 
-    public Trader chercherTrader(int id){
-       if(!traders.isEmpty()){
-           for(Trader tr : traders){
-               if(tr.getId() == id){
-                   return tr;
-               }else{
-                   System.out.println("----------------------------------------");
-                       System.out.println("cet id n'existe pas!  ");
-                   System.out.println("----------------------------------------");
-                   }
-           }
-       }else{
-           System.out.println("----------------------------------------");
-           System.out.println("aucun trader");
-           System.out.println("----------------------------------------");
-       }
+    public Trader chercherTrader(int id) {
+        if (!traders.isEmpty()) {
+            for (Trader tr : traders) {
+                if (tr.getId() == id) {
+                    return tr;
+                }
+            }
+            System.out.println("----------------------------------------");
+            System.out.println("cet id n'existe pas!  ");
+            System.out.println("----------------------------------------");
+
+        } else {
+            System.out.println("----------------------------------------");
+            System.out.println("aucun trader");
+            System.out.println("----------------------------------------");
+        }
         return null;
     }
+
     public void ConsulterPortefeuille(int id) {
         Trader tr = chercherTrader(id);
-        if(tr != null){
-            if(tr.getId() == id) {
+        if (tr != null) {
+            if (tr.getId() == id) {
                 System.out.println("----------------------------------------");
                 System.out.println("----------------------------------------");
                 System.out.println("---- Les informations du Portefeuille----- ");
                 System.out.println("ID de Portefeuille: " + tr.getPortfolio().getIdPorfolio() + "\n" +
                         "Le nom de trader: " + tr.getNom() + "\n" +
                         "Le solde : " + tr.getSolde() + " $ \n");
-                if(!tr.getPortfolio().getAssets().isEmpty() ){
+                if (!tr.getPortfolio().getAssets().isEmpty()) {
                     System.out.println(" Les actifs : ");
-                    for(Asset s : tr.getPortfolio().getAssets()){
-                        if (s.getQuantiteAsset() == 0){
+                    for (Asset s : tr.getPortfolio().getAssets()) {
+                        if (s.getQuantiteAsset() == 0) {
                             System.out.println("----------------------------------------");
                             System.out.println("aucun assets pour le moment");
                             System.out.println("----------------------------------------");
                             break;
                         }
-                        System.out.println("-le type: " + s.getType() +" || le nom : "+s.getNomAsset() +" || le prix unitaire: " + s.getPrixUnitaire() +" $ || la quantité: " + s.getQuantiteAsset() );
+                        System.out.println("-le type: " + s.getType() + " || le nom : " + s.getNomAsset() + " || le prix unitaire: " + s.getPrixUnitaire() + " $ || la quantité: " + s.getQuantiteAsset());
 
                     }
-                }else{
+                } else {
                     System.out.println("----------------------------------------");
                     System.out.println("aucun assets pour le moment");
                     System.out.println("----------------------------------------");
@@ -193,44 +198,43 @@ public class Market {
     }
 
 
-
     public void AcheterActif(Trader tr, Asset a, int quantite) {
-        if(quantite > 0){
-                if(tr.getSolde() > a.getPrixUnitaire()){
-                    double prixTotal = quantite * a.getPrixUnitaire();
-                    if(tr.getSolde() > prixTotal) {
-                        tr.setSolde(tr.getSolde() - prixTotal);
-                        Transaction transaction = new Transaction();
-                        transaction.setType("Achat");
-                        transaction.setQuantite(quantite);
-                        transaction.setPrix(prixTotal);
-                        transaction.setDate(LocalDateTime.now());
-                        transactions.add(transaction);
-                        tr.setTransactions(transaction);
-
-                        tr.getPortfolio().ajouterquantite(a, quantite);
-                        System.out.println("----------------------------------------");
-                        System.out.println("----------------------------------------");
-                        System.out.println("Achat effectué avec succes!");
-                        System.out.println("les informations: ");
-                        System.out.println("- le type d'asset acheter: " + a.getType() + "\n" +
-                                "- la quantité achetée: " + quantite + "\n" +
-                                "- le prix total : " + prixTotal+ "$");
-                        System.out.println("----------------------------------------");
-                        System.out.println("----------------------------------------");
-                    }else{
-                        System.out.println("----------------------------------------");
-                        System.out.println("solde insuffisant");
-                        System.out.println("----------------------------------------");
-                    }
-
-                }else{
+        if (quantite > 0) {
+            if (tr.getSolde() > a.getPrixUnitaire()) {
+                double prixTotal = quantite * a.getPrixUnitaire();
+                if (tr.getSolde() > prixTotal) {
+                    tr.setSolde(tr.getSolde() - prixTotal);
+                    Transaction transaction = new Transaction();
+                    transaction.setType("Achat");
+                    transaction.setQuantite(quantite);
+                    transaction.setPrix(prixTotal);
+                    transaction.setDate(LocalDateTime.now());
+                    transactions.add(transaction);
+                    tr.setTransactions(transaction);
+                    transaction.setAsset(a);
+                    tr.getPortfolio().ajouterquantite(a, quantite);
                     System.out.println("----------------------------------------");
-                    System.out.println("solde insufissant");
+                    System.out.println("----------------------------------------");
+                    System.out.println("Achat effectué avec succes!");
+                    System.out.println("les informations: ");
+                    System.out.println("- le type d'asset acheter: " + a.getType() + "\n" +
+                            "- la quantité achetée: " + quantite + "\n" +
+                            "- le prix total : " + prixTotal + "$");
+                    System.out.println("----------------------------------------");
+                    System.out.println("----------------------------------------");
+                } else {
+                    System.out.println("----------------------------------------");
+                    System.out.println("solde insuffisant");
                     System.out.println("----------------------------------------");
                 }
 
-        }else{
+            } else {
+                System.out.println("----------------------------------------");
+                System.out.println("solde insufissant");
+                System.out.println("----------------------------------------");
+            }
+
+        } else {
             System.out.println("----------------------------------------");
             System.out.println("la quantité doit étre positive! ");
             System.out.println("----------------------------------------");
@@ -239,7 +243,7 @@ public class Market {
     }
 
     public void vendreActif(Trader tr, Asset a, int quantite) {
-        if(quantite > 0){
+        if (quantite > 0) {
             if (a.getQuantiteAsset() >= quantite) {
                 double prixTotal = quantite * a.getPrixUnitaire();
                 tr.setSolde(tr.getSolde() + prixTotal);
@@ -248,7 +252,7 @@ public class Market {
                 transaction.setQuantite(quantite);
                 transaction.setPrix(prixTotal);
                 transaction.setDate(LocalDateTime.now());
-//                transaction.setAssets(a);
+                transaction.setAsset(a);
                 transactions.add(transaction);
                 tr.setTransactions(transaction);
                 tr.getPortfolio().diminuerQuantite(a, quantite);
@@ -258,18 +262,18 @@ public class Market {
                 System.out.println("les informations: ");
                 System.out.println("- le type d'asset vendu : " + a.getType() + "\n" +
                         "- la quantité vendue: " + quantite + "\n" +
-                        "- le prix total : " + prixTotal+ "$");
+                        "- le prix total : " + prixTotal + "$");
                 System.out.println("----------------------------------------");
                 System.out.println("----------------------------------------");
 
 
-            }else{
+            } else {
                 System.out.println("----------------------------------------");
                 System.out.println("quantité insuffisante");
                 System.out.println("----------------------------------------");
             }
 
-        }else{
+        } else {
             System.out.println("----------------------------------------");
             System.out.println("la quantité doit étre positive!");
             System.out.println("----------------------------------------");
@@ -291,17 +295,65 @@ public class Market {
         }
     }
 
-    public void transisionTrader(Trader tr){
-       traders.stream().filter(trader -> trader.getTransactions().equals(tr.getTransactions()))
-               .forEach(trader->{
-                   System.out.println("les transactions du trader " + trader.getNom() + " : ");
-                   transactions.stream().filter(transaction -> tr.getTransactions() == trader.getTransactions())
-                   .forEach(transaction -> {
-                       if (transaction.getAsset() != null){
-                           System.out.println("- le type de la transaction : " + transaction.getType() + " || le nom de l'asset: " +transaction.getAsset().getNomAsset() + " || - la quantité: " + transaction.getQuantite()  + "|| - la date :" + transaction.getDate());
-                       }
-                   });
-               });
+    public void transisionTrader(Trader tr) {
+        traders.stream().filter(trader -> trader.getTransactions().equals(tr.getTransactions()));
+
+        if (!tr.getTransactions().isEmpty()) {
+            System.out.println("----------------------------------------");
+            System.out.println("----------------------------------------");
+            System.out.println("les transactions du trader " + tr.getNom() + " : ");
+            tr.getTransactions().forEach(transaction -> {
+                if (transaction.getAsset() != null) {
+                    System.out.println("- le type de la transaction : " + transaction.getType() + " || le nom de l'asset: " + transaction.getAsset().getNomAsset() + " || - la quantité: " + transaction.getQuantite() + "|| - la date :" + transaction.getDate());
+                }
+            });
+        } else {
+            System.out.println("----------------------------------------");
+            System.out.println("aucune transaction pour ce trader");
+            System.out.println("----------------------------------------");
+        }
+
+    }
+
+    public void filterByType(int choix) {
+        List<Transaction> filtredTransactions = new ArrayList<>();
+        if (choix == 1) {
+            filtredTransactions = transactions.stream().filter(transaction -> transaction.getType().equals("Achat")).toList();
+            System.out.println("-------les transactions : ACHAT ---------");
+        }
+        if (choix == 2) {
+            filtredTransactions = transactions.stream().filter(transaction -> transaction.getType().equals("Vente")).toList();
+            System.out.println("-------les transactions : VENTE ---------");
+        }
+        if (filtredTransactions.isEmpty()) {
+            System.out.println("----------------------------------------");
+            System.out.println("aucune transaction pour le moment ");
+            System.out.println("----------------------------------------");
+            return;
+        }
+        filtredTransactions.forEach(transaction -> {
+            System.out.println("- le type de la transaction : " + transaction.getType() + " || le nom de l'asset: " + transaction.getAsset().getNomAsset() + " || - la quantité: " + transaction.getQuantite() + "|| - la date :" + transaction.getDate());
+            System.out.println("----------------------------------------");
+            System.out.println("----------------------------------------");
+        });
+
+    }
+
+    public void filteByActif(String code) {
+        Asset asset = chercherAsset(code);
+        List<Transaction> transactionsByType = transactions.stream()
+                .filter(transaction -> transaction.getAsset() == asset).toList();
+        System.out.println("-------transactions : " + asset.getCode() + "-----------");
+        transactionsByType.forEach(transaction ->
+                        System.out.println(" - le nom de l'asset: " + transaction.getAsset().getNomAsset() + "|| -le code :" + transaction.getAsset().getCode() + " || - le type de trasaction : " + transaction.getType() + " || -la quantité: " + transaction.getQuantite() )
+                );
+    }
+
+    public void filterBydate(){
+
+    }
+
+    public void trierBymontant(){
     }
 
 

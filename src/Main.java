@@ -120,8 +120,6 @@ public static void vendreAsset(){
         }else{
             System.out.println("entrez 1 ou 2 ");
         }
-
-
     }
 
     public static void main(String[] args) {

@@ -1,6 +1,7 @@
 
 import org.w3c.dom.ls.LSOutput;
 
+import java.util.Date;
 import java.util.Scanner;
 
 //TIP To <b>Run</b> code, press <shortcut actionId="Run"/> or
@@ -142,20 +143,25 @@ public class Main {
             System.out.print("entrez le code d'Actif à chercher: ");
             market.filteByActif(sc.nextLine());
         }else if(c == 3){
-            market.filterBydate();
+            System.out.print("entrez la date de début: ");
+           int debut = sc.nextInt();
+            System.out.println("entrez la date de fin: ");
+            int fin = sc.nextInt();
+            market.filterBydate(debut,fin);
         }
 
 
     }
 
     public static void trierTransactions(){
-        sc.nextLine();
+
         System.out.println("1- trier par montant || 2- trier par date ");
         System.out.print("entrez votre choix: ");
-       if(sc.nextInt() == 1){
+        int choix = sc.nextInt();
+       if(choix == 1){
            market.trierBymontant();
-        }else if(sc.nextInt() == 2){
-
+        }else if(choix == 2){
+           market.trierByDate();
        }
     }
 
@@ -197,7 +203,8 @@ public class Main {
                             "5- Vendre un actif\n" +
                             "6- Historique\n" +
                             "7- Filter les transactions \n" +
-                            "8- Retour "
+                            "8- trier les transactions \n" +
+                            "9- Retour "
                             );
                     System.out.print("entrez votre choix: ");
                     c = sc.nextInt();
@@ -209,10 +216,11 @@ public class Main {
                         case 5 -> vendreAsset();
                         case 6 -> historiqueTransaction();
                         case 7 -> filterTransaction();
-                        case 8 -> System.out.println("Retour");
+                        case 8 -> trierTransactions();
+                        case 9 -> System.out.println("Retour");
                         default -> System.out.println("entrez un nombre entre 1 et 9");
                     }
-                } while (c != 8);
+                } while (c != 9);
             } else if (ch == 3) {
                 System.out.println("Merci");
             } else {

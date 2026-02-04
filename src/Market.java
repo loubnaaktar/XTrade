@@ -1,8 +1,5 @@
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -345,15 +342,46 @@ public class Market {
                 .filter(transaction -> transaction.getAsset() == asset).toList();
         System.out.println("-------transactions : " + asset.getCode() + "-----------");
         transactionsByType.forEach(transaction ->
-                        System.out.println(" - le nom de l'asset: " + transaction.getAsset().getNomAsset() + "|| -le code :" + transaction.getAsset().getCode() + " || - le type de trasaction : " + transaction.getType() + " || -la quantité: " + transaction.getQuantite() )
-                );
+                System.out.println(" - le nom de l'asset: " + transaction.getAsset().getNomAsset() + "|| -le code :" + transaction.getAsset().getCode() + " || - le type de trasaction : " + transaction.getType() + " || -la quantité: " + transaction.getQuantite())
+        );
     }
 
-    public void filterBydate(){
+    public void filterBydate(int debut , int fin) {
 
     }
 
-    public void trierBymontant(){
+    public void trierBymontant() {
+        if(!transactions.isEmpty()){
+            Collections.sort(transactions, (tran1, tran2) -> (int) (tran2.getPrix() - tran1.getPrix()));
+            System.out.println("--------- trie par montant ---------");
+            transactions.forEach(transaction ->
+                    System.out.println("- le prix total : " + transaction.getPrix() + "$ || - le nom de l'asset: " + transaction.getAsset().getNomAsset() + "|| -le code :" + transaction.getAsset().getCode() + " || - le type de trasaction : " + transaction.getType() + " || -la quantité: " + transaction.getQuantite())
+            );
+            System.out.println("----------------------------------------");
+            System.out.println("----------------------------------------");
+        }else{
+            System.out.println("----------------------------------------");
+            System.out.println("aucune transaction pour le moment ");
+            System.out.println("----------------------------------------");
+        }
+
+    }
+
+    public void trierByDate(){
+        if(!transactions.isEmpty()){
+            Collections.sort(transactions, Comparator.comparing(Transaction::getDate, Comparator.reverseOrder()));
+            System.out.println("------ trie par date ---------");
+            transactions.forEach(transaction ->
+                    System.out.println("- la date :" + transaction.getDate() + " || - le prix total : " + transaction.getPrix() + "$ || - le nom de l'asset: " + transaction.getAsset().getNomAsset() + "|| -le code :" + transaction.getAsset().getCode() + " || - le type de trasaction : " + transaction.getType() + " || -la quantité: " + transaction.getQuantite())
+            );
+            System.out.println("----------------------------------------");
+            System.out.println("----------------------------------------");
+        }else{
+            System.out.println("----------------------------------------");
+            System.out.println("aucune transaction pour le moment ");
+            System.out.println("----------------------------------------");
+        }
+
     }
 
 

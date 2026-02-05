@@ -165,6 +165,46 @@ public class Main {
        }
     }
 
+    public static void calculeTransactions(){
+        System.out.println("-----------------------------------------");
+        System.out.println("1-  voir le volume total échangé par actif \n" +
+                "2- voir le montant total des achats et des ventes");
+        System.out.print("entrez votre choix: ");
+        int c = sc.nextInt();
+        if(c == 1){
+            sc.nextLine();
+            System.out.print("entrez le code de l'actif : ");
+            market.calculeVolumeActif(sc.nextLine());
+        }
+        if(c == 2){
+            market.calculeMontantAchat();
+            market.calculeMonatantVente();
+        }
+    }
+
+
+    public static void AnalyseTraders(){
+        System.out.println("1- Calcul du volume total échangé par trader\n" +
+                "2- Calcul du nombre total d’ordres passés\n" +
+                "3- Classement des traders par volume (top N traders)");
+        System.out.print("entrez votre choix: ");
+        int c = sc.nextInt();
+        if(c == 1){
+            System.out.println("entrez l'id du trader: ");
+            market.volumeTotalEchangesTrader(sc.nextInt());
+        }else if (c == 2){
+            System.out.print("entrez l'id du trader: ");
+            market.calculeOrdres(sc.nextInt());
+        }else if (c == 3){
+            System.out.println("entrez un nombre: ");
+            market.topTraders(sc.nextInt());
+        }else{
+            System.out.println("entrez un nombre entre 1 et 3 ");
+        }
+
+    }
+
+
     public static void main(String[] args) {
 
 
@@ -203,8 +243,10 @@ public class Main {
                             "5- Vendre un actif\n" +
                             "6- Historique\n" +
                             "7- Filter les transactions \n" +
-                            "8- trier les transactions \n" +
-                            "9- Retour "
+                            "8- Trier les transactions \n" +
+                            "9- Calcule de volume des actifs et d'achats et ventes \n" +
+                            "10- Analyse de performance par trader\n" +
+                            "11- Retour "
                             );
                     System.out.print("entrez votre choix: ");
                     c = sc.nextInt();
@@ -217,10 +259,12 @@ public class Main {
                         case 6 -> historiqueTransaction();
                         case 7 -> filterTransaction();
                         case 8 -> trierTransactions();
-                        case 9 -> System.out.println("Retour");
-                        default -> System.out.println("entrez un nombre entre 1 et 9");
+                        case 9 -> calculeTransactions();
+                        case 10 -> AnalyseTraders();
+                        case 11 -> System.out.println("Retour");
+                        default -> System.out.println("entrez un nombre entre 1 et 11");
                     }
-                } while (c != 9);
+                } while (c != 11);
             } else if (ch == 3) {
                 System.out.println("Merci");
             } else {

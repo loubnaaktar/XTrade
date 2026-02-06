@@ -3,6 +3,8 @@ import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
+import static sun.swing.MenuItemLayoutHelper.max;
+
 
 public class Market {
     private String nomMarket;
@@ -112,6 +114,7 @@ public class Market {
             System.out.println("----------------------------------------");
         }
     }
+
 
     public Asset chercherAsset(String code) {
         for (Asset asset : assets) {
@@ -466,21 +469,76 @@ public void calculeOrdres(int id){
         }
 }
 
-public void topTraders(int n){
-        if(!traders.isEmpty()){
-            if(!transactions.isEmpty()){
-               int totalVolume =  traders.stream()
-                       .mapToInt(tr->
-              tr.getTransactions().stream()
-                        .mapToInt(Transaction::getQuantite)
-                        .sum()
-                ).sum();
+    public void topTraders(int n) {
+
+        if (traders.isEmpty()) {
+            return;
+        }
+        traders.stream()
+                .sorted((t1, t2) -> {
+                    int v1 = t1.getTransactions().stream()
+                            .mapToInt(Transaction::getQuantite)
+                            .sum();
+
+                    int v2 = t2.getTransactions().stream()
+                            .mapToInt(Transaction::getQuantite)
+                            .sum();
+
+                    return Integer.compare(v2, v1);
+                })
+                .limit(n)
+                .forEach(tr -> {
+                    int volume = tr.getTransactions().stream()
+                            .mapToInt(Transaction::getQuantite)
+                            .sum();
+
+                    System.out.println(
+                            tr.getNom() + " - Volume : " + volume
+                    );
+                });
+    }
+
+    public void volumeActif(int type){
+        if(type == 1){
+            int volumeStock  = assets.stream()
+                    .filter(asset-> asset.getType().equals("Stock"))
+                    .mapToInt(Asset::getQuantiteAsset)
+                    .sum();
+            System.out.println("----------------------------------------");
+            System.out.println("le volume total de stock est: " + volumeStock);
+            System.out.println("----------------------------------------");
+        }else if (type == 2){
+            int volumeCrypto  = assets.stream()
+                    .filter(asset-> asset.getType().equals("Crypto"))
+                    .mapToInt(Asset::getQuantiteAsset)
+                    .sum();
+            System.out.println("----------------------------------------");
+            System.out.println("le volume total de stock est: " + volumeCrypto);
+            System.out.println("----------------------------------------");
+
+        }
+    }
+    public void plusEchange(){
+        int volumeStock  = assets.stream()
+                .filter(asset-> asset.getType().equals("Stock"))
+                .mapToInt(Asset::getQuantiteAsset)
+                .sum();
+        int volumeCrypto  = assets.stream()
+                .filter(asset-> asset.getType().equals("Crypto"))
+                .mapToInt(Asset::getQuantiteAsset)
+                .sum();
+       if(volumeCrypto>volumeStock){
+           System.out.println("----------------------------------------");
+           System.out.println("L’instrument le plus échangé est : Crypto || volume: " + volumeCrypto);
+           System.out.println("----------------------------------------");
+       }if(volumeCrypto <volumeStock){
+            System.out.println("----------------------------------------");
+            System.out.println("L’instrument le plus échangé est : Stock || volume: " + volumeStock);
+            System.out.println("----------------------------------------");
+
+        }
+    }
 
 
-            }
 }
-}
 
-
-
-}

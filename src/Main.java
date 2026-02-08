@@ -1,6 +1,7 @@
 
 import org.w3c.dom.ls.LSOutput;
 
+import java.time.LocalDate;
 import java.util.Date;
 import java.util.Scanner;
 
@@ -21,16 +22,14 @@ public class Main {
             System.out.println("1- ADMIN\n" +
                     "2- UTILISATEUR\n" +
                     "3- Quitter");
-            System.out.print("entrez votre choix: ");
-            ch = sc.nextInt();
+            ch = entreChoix();
             if (ch == 1) {
                 int choix;
                 do {
                     System.out.println("1- ajouter actif \n" +
                             "2- modifier actitif\n" +
                             "3- Retour");
-                    System.out.print("entrez votre choix: ");
-                    choix = sc.nextInt();
+                    choix = entreChoix();
                     switch (choix) {
                         case 1 -> ajouterActif();
                         case 2 -> changerPrix();
@@ -55,8 +54,7 @@ public class Main {
                             "11- Analyse globale du marché simulé\n" +
                             "12- Retour "
                     );
-                    System.out.print("entrez votre choix: ");
-                    c = sc.nextInt();
+                    c = entreChoix();
                     switch (c) {
                         case 1 -> ajouterTrader();
                         case 2 -> market.AfficherActifs();
@@ -98,8 +96,7 @@ public class Main {
         System.out.println("entrez le type d'actif que vous voulez ajouter :\n" +
                 "1- stock\n" +
                 "2- crypto\n");
-        System.out.print("entrez votre choix: ");
-        int ch = sc.nextInt();
+        int ch = entreChoix();
 
         sc.nextLine();
         System.out.print("entrez le code : ");
@@ -121,10 +118,7 @@ public class Main {
 
 
     public static void changerPrix() {
-        sc.nextLine();
-        System.out.print("Entrez le code de l’asset dont vous voulez changer le prix: ");
-        String code = sc.nextLine();
-        Asset a = market.chercherAsset(code);
+        Asset a = market.chercherAsset(entreCode());
         if (a != null) {
             System.out.print("entrez le nouveau prix unitaire: ");
             double nvprix = sc.nextDouble();
@@ -135,18 +129,15 @@ public class Main {
     }
 
     public static void consulterPf() {
-        System.out.print("entrez Id du trader: ");
-        market.ConsulterPortefeuille(sc.nextInt());
+        market.ConsulterPortefeuille(entreId());
     }
 
     public static void acheterAsset() {
-        System.out.print("entrez votre id : ");
-        Trader tr = market.chercherTrader(sc.nextInt());
+        Trader tr = market.chercherTrader(entreId());
         if (tr != null) {
             sc.nextLine();
             market.AfficherActifs();
-            System.out.print("entrez le code de l'asset à acheter: ");
-            Asset a = market.chercherAsset(sc.nextLine());
+            Asset a = market.chercherAsset(entreCode());
             if (a != null) {
                 System.out.print("entrez la quantité que vous voulez acheter: ");
                 int quantite = sc.nextInt();
@@ -157,12 +148,10 @@ public class Main {
     }
 
     public static void vendreAsset() {
-        System.out.print("entrez votre id : ");
-        Trader tr = market.chercherTrader(sc.nextInt());
+        Trader tr = market.chercherTrader(entreId());
         if (tr != null) {
             sc.nextLine();
-            System.out.print("entrez le code de l'asset à vendre: ");
-            Asset a = market.chercherAsset(sc.nextLine());
+            Asset a = market.chercherAsset(entreCode());
             if (a != null) {
                 if (tr.getPortfolio().getAssets().contains(a)) {
                     System.out.print("entrez la quantité que vous voulez vendre: ");
@@ -181,13 +170,11 @@ public class Main {
 
         System.out.println("Voulez-vous voir l’historique général ou l’historique d’un trader ? : 1- historique général \n" +
                 " 2- l'historique d'un trader ");
-        System.out.print("entrez votre choix: ");
-        int choix = sc.nextInt();
+        int choix = entreChoix();
         if (choix == 1) {
             market.Historique();
         } else if (choix == 2) {
-            System.out.print("entrez l'id du trader:");
-            Trader tr = market.chercherTrader(sc.nextInt());
+            Trader tr = market.chercherTrader(entreId());
             if (tr != null) {
                 market.transisionTrader(tr);
             }
@@ -202,31 +189,27 @@ public class Main {
                 "2- Actif financier (ex : AAPL, BTC, EUR/USD) \n" +
                 "3- Intervalle de dates\n" +
                 "4- Retour");
-        System.out.print("entrez votre choix :");
-        int c = sc.nextInt();
+        int c = entreChoix();
         if (c == 1) {
             System.out.println("choisisez : 1- Achat || 2- Vente ");
-            System.out.print("entrez votre choix : ");
-            int choix = sc.nextInt();
+            int choix = entreChoix();
             market.filterByType(choix);
         }else if(c == 2){
             sc.nextLine();
-            System.out.print("entrez le code d'Actif à chercher: ");
-            market.filteByActif(sc.nextLine());
+            market.filteByActif(entreCode());
         }else if(c == 3){
-            System.out.print("entrez la date de début: ");
-           int debut = sc.nextInt();
-            System.out.println("entrez la date de fin: ");
-            int fin = sc.nextInt();
-            market.filterBydate(debut,fin);
+            System.out.print("entrez la date de début (yyyy-MM-dd) : ");
+           LocalDate debut = LocalDate.parse(sc.next());
+            System.out.print("entrez la date de fin (yyyy-MM-dd) : ");
+            LocalDate fin = LocalDate.parse(sc.next());
+            market.filterByDate(debut,fin);
         }
     }
 
     public static void trierTransactions(){
 
         System.out.println("1- trier par montant || 2- trier par date ");
-        System.out.print("entrez votre choix: ");
-        int choix = sc.nextInt();
+        int choix = entreChoix();
        if(choix == 1){
            market.trierBymontant();
         }else if(choix == 2){
@@ -238,12 +221,9 @@ public class Main {
         System.out.println("-----------------------------------------");
         System.out.println("1-  voir le volume total échangé par actif \n" +
                 "2- voir le montant total des achats et des ventes");
-        System.out.print("entrez votre choix: ");
-        int c = sc.nextInt();
+        int c = entreChoix();
         if(c == 1){
-            sc.nextLine();
-            System.out.print("entrez le code de l'actif : ");
-            market.calculeVolumeActif(sc.nextLine());
+            market.calculeVolumeActif(entreCode());
         }
         if(c == 2){
             market.calculeMontantAchat();
@@ -256,14 +236,11 @@ public class Main {
         System.out.println("1- Calcul du volume total échangé par trader\n" +
                 "2- Calcul du nombre total d’ordres passés\n" +
                 "3- Classement des traders par volume (top N traders)");
-        System.out.print("entrez votre choix: ");
-        int c = sc.nextInt();
+        int c = entreChoix();
         if(c == 1){
-            System.out.println("entrez l'id du trader: ");
-            market.volumeTotalEchangesTrader(sc.nextInt());
+            market.volumeTotalEchangesTrader(entreId());
         }else if (c == 2){
-            System.out.print("entrez l'id du trader: ");
-            market.calculeOrdres(sc.nextInt());
+            market.calculeOrdres(entreId());
         }else if (c == 3){
             System.out.println("entrez un nombre: ");
             market.topTraders(sc.nextInt());
@@ -278,22 +255,33 @@ public class Main {
         System.out.println("1- Calcul du volume total échangé par instrument financier\n" +
                 "2- Identification de l’instrument le plus échangé\n" +
                 "3- Calcul du montant total des BUY et des SELL séparément\n");
-        System.out.print("entrez votre choix: ");
-        int choix = sc.nextInt();
+        int choix = entreChoix();
         if(choix == 1){
             System.out.println("1- Stock\n" +
                     "2- Crypto");
-            System.out.print("entrez votre choix: ");
-            market.volumeActif(sc.nextInt());
+            market.volumeActif(entreChoix());
         }else if(choix == 2){
             market.plusEchange();
         }else if(choix == 3){
-
+            market.calculemontantTotal();
         }else{
             System.out.println("entrez un nombre entre 1 et 3 ");
         }
     }
 
+public static int entreChoix(){
+    System.out.print("entrez votre choix: ");
+    return sc.nextInt();
+}
 
+public static int entreId(){
+    System.out.print("entrez l'id du trader :");
+    return sc.nextInt();
+}
+
+public static String entreCode(){
+    System.out.print("entrez le code de l'actif : ");
+    return sc.next();
+}
 
 }

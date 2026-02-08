@@ -1,3 +1,4 @@
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.*;
 import java.util.stream.Collectors;
@@ -349,15 +350,24 @@ public class Market {
         );
     }
 
-    public void filterBydate(int debut, int fin) {
-
+    public void filterByDate(LocalDate debut, LocalDate fin) {
+        transactions.stream()
+                .filter(t ->
+                        !t.getDate().isBefore(debut.atStartOfDay()) &&
+                                !t.getDate().isAfter(fin.atStartOfDay())
+                )
+                .forEach(transaction -> System.out.println(
+                        "- la date : " + transaction.getDate() + " || - le type de la transaction : " + transaction.getType() + " || - le nom de l'asset : " + transaction.getAsset().getNomAsset() + " || - la quantité : " + transaction.getQuantite()
+                ));
     }
+
 
     public void trierBymontant() {
         if (!transactions.isEmpty()) {
-            Collections.sort(transactions, (tran1, tran2) -> (int) (tran2.getPrix() - tran1.getPrix()));
+               List<Transaction> trierByMontant = transactions.stream()
+                       .sorted(Comparator.comparing(Transaction::getPrix).reversed()).toList();
             System.out.println("--------- trie par montant ---------");
-            transactions.forEach(transaction ->
+            trierByMontant.forEach(transaction ->
                     System.out.println("- le prix total : " + transaction.getPrix() + "$ || - le nom de l'asset: " + transaction.getAsset().getNomAsset() + "|| -le code :" + transaction.getAsset().getCode() + " || - le type de trasaction : " + transaction.getType() + " || -la quantité: " + transaction.getQuantite())
             );
             System.out.println("----------------------------------------");
@@ -372,9 +382,10 @@ public class Market {
 
     public void trierByDate() {
         if (!transactions.isEmpty()) {
-            Collections.sort(transactions, Comparator.comparing(Transaction::getDate, Comparator.reverseOrder()));
+            List<Transaction> trierByDate = transactions.stream()
+                            .sorted(Comparator.comparing(Transaction::getDate).reversed()).toList();
             System.out.println("------ trie par date ---------");
-            transactions.forEach(transaction ->
+            trierByDate.forEach(transaction ->
                     System.out.println("- la date :" + transaction.getDate() + " || - le prix total : " + transaction.getPrix() + "$ || - le nom de l'asset: " + transaction.getAsset().getNomAsset() + "|| -le code :" + transaction.getAsset().getCode() + " || - le type de trasaction : " + transaction.getType() + " || -la quantité: " + transaction.getQuantite())
             );
             System.out.println("----------------------------------------");
@@ -424,7 +435,8 @@ public class Market {
                     .mapToDouble(Transaction::getPrix)
                     .sum();
             System.out.println("----------------------------------------");
-            System.out.println("Montant total des achats : " + montantTotalV + " $");
+            System.out.println("Montant total des ventes : " + montantTotalV + " $");
+            System.out.println("----------------------------------------");
         } else {
             System.out.println("----------------------------------------");
             System.out.println("Aucune transaction pour le moment");
@@ -438,11 +450,8 @@ public class Market {
         Trader tr = chercherTrader(id);
         if (tr != null) {
             if (!tr.getTransactions().isEmpty()) {
-                int volumeTotal = tr.getTransactions().stream()
-                        .mapToInt(Transaction::getQuantite)
-                        .sum();
                 System.out.println("----------------------------------------");
-                System.out.println("Volume total échangé par : " + tr.getNom() + " est : " + volumeTotal);
+                System.out.println("Volume total échangé par : " + tr.getNom() + " est : " + tr.getVolumeTotal());
                 System.out.println("----------------------------------------");
             } else {
                 System.out.println("----------------------------------------");
@@ -457,45 +466,36 @@ public void calculeOrdres(int id){
         Trader tr = chercherTrader(id);
         if(tr != null){
             if(!tr.getTransactions().isEmpty()){
-                int ordres = tr.getTransactions().size();
+                int ordres = (int) tr.getTransactions().stream()
+                                .count();
                 System.out.println("----------------------------------------");
                 System.out.println("le nombres d'ordres réalisées par " + tr.getNom() + " est : " + ordres);
+                System.out.println("----------------------------------------");
+            }else{
+                System.out.println("----------------------------------------");
+                System.out.println("aucune transactions pour le moment");
                 System.out.println("----------------------------------------");
             }
         }else {
             System.out.println("----------------------------------------");
-            System.out.println("Aucune transaction pour le moment");
+            System.out.println("Trader introuvable !");
             System.out.println("----------------------------------------");
         }
 }
 
     public void topTraders(int n) {
 
-        if (traders.isEmpty()) {
+        if (traders.isEmpty() || n <= 0) {
             return;
         }
-        traders.stream()
-                .sorted((t1, t2) -> {
-                    int v1 = t1.getTransactions().stream()
-                            .mapToInt(Transaction::getQuantite)
-                            .sum();
-
-                    int v2 = t2.getTransactions().stream()
-                            .mapToInt(Transaction::getQuantite)
-                            .sum();
-
-                    return Integer.compare(v2, v1);
-                })
-                .limit(n)
-                .forEach(tr -> {
-                    int volume = tr.getTransactions().stream()
-                            .mapToInt(Transaction::getQuantite)
-                            .sum();
-
-                    System.out.println(
-                            tr.getNom() + " - Volume : " + volume
-                    );
-                });
+      List<Trader> topTraders = traders.stream()
+              .sorted(Comparator.comparing(Trader::getVolumeTotal).reversed()).limit(n).toList();
+        System.out.println("----------------------------------------");
+        System.out.println("----------------------------------------");
+        System.out.println("Les " + topTraders.size() + "traders :");
+        topTraders.forEach(trader -> {
+            System.out.println("id trader : " + trader.getId() + " volume : " + trader.getVolumeTotal());
+        });
     }
 
     public void volumeActif(int type){
@@ -539,6 +539,9 @@ public void calculeOrdres(int id){
         }
     }
 
-
+public void calculemontantTotal(){
+calculeMontantAchat();
+calculeMonatantVente();
+}
 }
 

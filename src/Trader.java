@@ -42,4 +42,11 @@ public class Trader extends Person{
     public void setTransactions(Transaction transaction) {
         transactions.add(transaction);
     }
+
+
+    public int getVolumeTotal() {
+        return transactions.stream()
+                .mapToInt(Transaction::getQuantite)
+                .sum();
+    }
 }
